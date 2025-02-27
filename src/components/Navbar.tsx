@@ -25,11 +25,12 @@ import FolderIcon from '@mui/icons-material/Folder';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useAuth } from '../context/AuthContext';
 import { APP_NAME } from '../lib/constants';
 
 const Navbar: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, userProfile, signOut } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -65,6 +66,8 @@ const Navbar: React.FC = () => {
     }
     setDrawerOpen(open);
   };
+
+  const isAdmin = userProfile?.role === 'super_admin' || userProfile?.role === 'organization_admin';
 
   return (
     <AppBar position="static" elevation={0} sx={{ backgroundColor: 'background.paper', color: 'text.primary', borderBottom: '1px solid', borderColor: 'divider' }}>
@@ -118,6 +121,17 @@ const Navbar: React.FC = () => {
             >
               Projects
             </Button>
+            {isAdmin && (
+              <Button 
+                component={RouterLink} 
+                to="/admin" 
+                color="inherit"
+                startIcon={<AdminPanelSettingsIcon />}
+                sx={{ mx: 1 }}
+              >
+                Admin
+              </Button>
+            )}
           </Box>
         )}
 
@@ -132,44 +146,52 @@ const Navbar: React.FC = () => {
                 {user.email?.charAt(0).toUpperCase() || 'U'}
               </Avatar>
             </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              PaperProps={{
-                elevation: 3,
-                sx: {
-                  mt: 1.5,
-                  overflow: 'visible',
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
-                  '&:before': {
-                    content: '""',
-                    display: 'block',
-                    position: 'absolute',
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: 'background.paper',
-                    transform: 'translateY(-50%) rotate(45deg)',
-                    zIndex: 0,
+            {/* Only render the Menu when anchorEl is not null */}
+            {anchorEl && (
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                PaperProps={{
+                  elevation: 3,
+                  sx: {
+                    mt: 1.5,
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.1))',
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
                   },
-                },
-              }}
-            >
-              <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>
-                Profile
-              </MenuItem>
-              <MenuItem component={RouterLink} to="/settings" onClick={handleClose}>
-                Settings
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={handleSignOut}>
-                Sign Out
-              </MenuItem>
-            </Menu>
+                }}
+              >
+                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>
+                  Profile
+                </MenuItem>
+                <MenuItem component={RouterLink} to="/settings" onClick={handleClose}>
+                  Settings
+                </MenuItem>
+                {isAdmin && (
+                  <MenuItem component={RouterLink} to="/admin" onClick={handleClose}>
+                    Admin Dashboard
+                  </MenuItem>
+                )}
+                <Divider />
+                <MenuItem onClick={handleSignOut}>
+                  Sign Out
+                </MenuItem>
+              </Menu>
+            )}
           </Box>
         ) : (
           <Box>
@@ -230,6 +252,14 @@ const Navbar: React.FC = () => {
               </ListItemIcon>
               <ListItemText primary="Projects" />
             </ListItem>
+            {isAdmin && (
+              <ListItem button component={RouterLink} to="/admin">
+                <ListItemIcon>
+                  <AdminPanelSettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin" />
+              </ListItem>
+            )}
             <ListItem button component={RouterLink} to="/settings">
               <ListItemIcon>
                 <SettingsIcon />

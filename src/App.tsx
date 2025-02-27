@@ -6,6 +6,11 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminRoute from './components/AdminRoute';
+import ProjectsPage from './pages/projects/ProjectsPage';
+import ProfilePage from './pages/profile/ProfilePage';
+import SettingsPage from './pages/settings/SettingsPage';
 
 // Protected route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -40,10 +45,26 @@ function App() {
               } 
             />
             <Route 
+              path="admin" 
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              } 
+            />
+            <Route 
+              path="admin/super" 
+              element={
+                <AdminRoute requiredRole="super_admin">
+                  <AdminDashboard />
+                </AdminRoute>
+              } 
+            />
+            <Route 
               path="projects" 
               element={
                 <ProtectedRoute>
-                  <div>Projects Page (Coming Soon)</div>
+                  <ProjectsPage />
                 </ProtectedRoute>
               } 
             />
@@ -51,7 +72,7 @@ function App() {
               path="profile" 
               element={
                 <ProtectedRoute>
-                  <div>Profile Page (Coming Soon)</div>
+                  <ProfilePage />
                 </ProtectedRoute>
               } 
             />
@@ -59,7 +80,7 @@ function App() {
               path="settings" 
               element={
                 <ProtectedRoute>
-                  <div>Settings Page (Coming Soon)</div>
+                  <SettingsPage />
                 </ProtectedRoute>
               } 
             />
