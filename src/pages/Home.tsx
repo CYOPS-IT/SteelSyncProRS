@@ -8,7 +8,6 @@ import {
   Typography, 
   Card, 
   CardContent,
-  CardMedia,
   Stack,
   Avatar,
   Paper,
@@ -21,12 +20,10 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import FactoryIcon from '@mui/icons-material/Factory';
-import { useAuth } from '../context/AuthContext';
 import { APP_NAME } from '../lib/constants';
+import { features, testimonials } from '../lib/api';
 
 const Home: React.FC = () => {
-  const { user } = useAuth();
-
   return (
     <Box>
       {/* Hero Section */}
@@ -72,7 +69,7 @@ const Home: React.FC = () => {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                   <Button 
                     component={RouterLink} 
-                    to={user ? "/dashboard" : "/register"} 
+                    to="/features" 
                     variant="contained" 
                     size="large"
                     sx={{ 
@@ -88,11 +85,11 @@ const Home: React.FC = () => {
                       }
                     }}
                   >
-                    {user ? "Go to Dashboard" : "Get Started"}
+                    Get Started
                   </Button>
                   <Button 
                     component={RouterLink} 
-                    to="/about" 
+                    to="/capabilities" 
                     variant="outlined" 
                     size="large"
                     sx={{ 
@@ -163,66 +160,29 @@ const Home: React.FC = () => {
         </Box>
 
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', bgcolor: 'primary.main', color: 'white' }}>
-                <StorageIcon sx={{ fontSize: 60 }} />
-              </Box>
-              <CardContent sx={{ flexGrow: 1, pt: 4 }}>
-                <Typography gutterBottom variant="h5" component="h3" align="center" fontWeight="bold">
-                  Inventory Management
-                </Typography>
-                <Typography variant="body2" color="text.secondary" align="center">
-                  Track raw materials, work-in-progress, and finished goods with real-time updates and alerts.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', bgcolor: 'primary.main', color: 'white' }}>
-                <BarChartIcon sx={{ fontSize: 60 }} />
-              </Box>
-              <CardContent sx={{ flexGrow: 1, pt: 4 }}>
-                <Typography gutterBottom variant="h5" component="h3" align="center" fontWeight="bold">
-                  Production Analytics
-                </Typography>
-                <Typography variant="body2" color="text.secondary" align="center">
-                  Gain insights into production efficiency, bottlenecks, and opportunities for improvement.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', bgcolor: 'primary.main', color: 'white' }}>
-                <GroupsIcon sx={{ fontSize: 60 }} />
-              </Box>
-              <CardContent sx={{ flexGrow: 1, pt: 4 }}>
-                <Typography gutterBottom variant="h5" component="h3" align="center" fontWeight="bold">
-                  Team Collaboration
-                </Typography>
-                <Typography variant="body2" color="text.secondary" align="center">
-                  Enable seamless communication between departments with role-based access and notifications.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', bgcolor: 'primary.main', color: 'white' }}>
-                <ShieldIcon sx={{ fontSize: 60 }} />
-              </Box>
-              <CardContent sx={{ flexGrow: 1, pt: 4 }}>
-                <Typography gutterBottom variant="h5" component="h3" align="center" fontWeight="bold">
-                  Quality Control
-                </Typography>
-                <Typography variant="body2" color="text.secondary" align="center">
-                  Implement quality checks at every stage of production to ensure consistent product quality.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          {features.map((feature, index) => {
+            const FeatureIcon = index === 0 ? StorageIcon : 
+                               index === 1 ? BarChartIcon : 
+                               index === 2 ? GroupsIcon : ShieldIcon;
+            
+            return (
+              <Grid item xs={12} sm={6} md={3} key={feature.id}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', bgcolor: 'primary.main', color: 'white' }}>
+                    <FeatureIcon sx={{ fontSize: 60 }} />
+                  </Box>
+                  <CardContent sx={{ flexGrow: 1, pt: 4 }}>
+                    <Typography gutterBottom variant="h5" component="h3" align="center" fontWeight="bold">
+                      {feature.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" align="center">
+                      {feature.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </Container>
 
@@ -327,84 +287,47 @@ const Home: React.FC = () => {
             </Typography>
           </Box>
           <Grid container spacing={4} justifyContent="center">
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%', position: 'relative', overflow: 'visible' }}>
-                <Box sx={{ 
-                  position: 'absolute', 
-                  top: -20, 
-                  left: 20, 
-                  width: 40, 
-                  height: 40, 
-                  bgcolor: 'primary.main', 
-                  color: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  fontSize: 24,
-                  fontWeight: 'bold'
-                }}>
-                  "
-                </Box>
-                <CardContent sx={{ pt: 4 }}>
-                  <Typography variant="body1" paragraph sx={{ fontStyle: 'italic', mb: 3 }}>
-                    "{APP_NAME} has transformed our manufacturing process. We've seen a 30% increase in efficiency and significant reduction in waste."
-                  </Typography>
-                  <Divider sx={{ my: 2 }} />
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>JD</Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        John Doe
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Operations Manager, Steel Industries Inc.
-                      </Typography>
-                    </Box>
+            {testimonials.map((testimonial) => (
+              <Grid item xs={12} md={4} key={testimonial.id}>
+                <Card sx={{ height: '100%', position: 'relative', overflow: 'visible' }}>
+                  <Box sx={{ 
+                    position: 'absolute', 
+                    top: -20, 
+                    left: 20, 
+                    width: 40, 
+                    height: 40, 
+                    bgcolor: 'primary.main', 
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    fontSize: 24,
+                    fontWeight: 'bold'
+                  }}>
+                    "
                   </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Card sx={{ height: '100%', position: 'relative', overflow: 'visible' }}>
-                <Box sx={{ 
-                  position: 'absolute', 
-                  top: -20, 
-                  left: 20, 
-                  width: 40, 
-                  height: 40, 
-                  bgcolor: 'primary.main', 
-                  color: 'white',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  fontSize: 24,
-                  fontWeight: 'bold'
-                }}>
-                  "
-                </Box>
-                <CardContent sx={{ pt: 4 }}>
-                  <Typography variant="body1" paragraph sx={{ fontStyle: 'italic', mb: 3 }}>
-                    "The analytics capabilities have given us insights we never had before. Our decision-making is now data-driven and more effective."
-                  </Typography>
-                  <Divider sx={{ my: 2 }} />
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>JS</Avatar>
-                    <Box>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        Jane Smith
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        CEO, MetalWorks Co.
-                      </Typography>
+                  <CardContent sx={{ pt: 4 }}>
+                    <Typography variant="body1" paragraph sx={{ fontStyle: 'italic', mb: 3 }}>
+                      "{testimonial.quote}"
+                    </Typography>
+                    <Divider sx={{ my: 2 }} />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>{testimonial.initials}</Avatar>
+                      <Box>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                          {testimonial.author}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {testimonial.position}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
@@ -436,7 +359,7 @@ const Home: React.FC = () => {
           </Typography>
           <Button 
             component={RouterLink} 
-            to={user ? "/dashboard" : "/register"} 
+            to="/features" 
             variant="contained" 
             size="large"
             sx={{ 
@@ -452,7 +375,7 @@ const Home: React.FC = () => {
               }
             }}
           >
-            {user ? "Go to Dashboard" : "Start Free Trial"}
+            Learn More
           </Button>
         </Container>
         <Box 

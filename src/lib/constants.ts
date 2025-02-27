@@ -1,1 +1,1 @@
-export const APP_NAME = import.meta.env.VITE_APP_NAME || 'Steel Sync Pro';
+export const APP_NAME = 'Steel Sync Pro';

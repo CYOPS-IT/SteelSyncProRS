@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 const theme = createTheme({
   palette: {
@@ -153,9 +154,17 @@ const Layout: React.FC = () => {
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box 
+          component="main" 
+          sx={{ 
+            flexGrow: 1, 
+            p: 0,
+            pb: 8, // Add padding at the bottom for the footer
+          }}
+        >
           <Outlet />
         </Box>
+        <Footer />
       </Box>
     </ThemeProvider>
   );
