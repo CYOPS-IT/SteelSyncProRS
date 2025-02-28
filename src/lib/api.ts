@@ -88,14 +88,14 @@ export const techStack = [
     title: 'Frontend',
     description: 'Modern, responsive user interfaces built with React and TypeScript.',
     icon: 'CodeIcon',
-    technologies: ['React', 'TypeScript', 'Material UI', 'Tailwind CSS']
+    technologies: ['React', 'TypeScript', 'Material UI']
   },
   {
     id: '2',
     title: 'Backend',
     description: 'Scalable, secure backend services built with Node.js and PostgreSQL.',
     icon: 'StorageOutlinedIcon',
-    technologies: ['Node.js', 'Express', 'PostgreSQL', 'Supabase']
+    technologies: ['Node.js', 'Express', 'PostgreSQL', 'RESTful APIs']
   },
   {
     id: '3',
@@ -112,35 +112,3 @@ export const techStack = [
     technologies: ['Git', 'CI/CD', 'Jest', 'ESLint']
   }
 ];
-
-// Mock functions to replace API calls
-export const fetchProjects = async () => {
-  return [];
-};
-
-export const fetchDashboardStats = async () => {
-  return {
-    efficiency: 85,
-    efficiencyChange: 5,
-    downtime: 45,
-    downtimeUnit: 'minutes',
-    lowStockItems: 3,
-    qualityIssues: 2,
-    activeProjects: 8,
-    dailyProduction: 850,
-    dailyTarget: 1000,
-    totalStock: 12500
-  };
-};
-
-export const fetchProductionItems = async () => {
-  return [];
-};
-
-export const fetchInventoryItems = async () => {
-  return [];
-};
-
-export const fetchActivityItems = async () => {
-  return [];
-};

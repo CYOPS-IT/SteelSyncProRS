@@ -17,9 +17,8 @@ import StorageIcon from '@mui/icons-material/Storage';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ShieldIcon from '@mui/icons-material/Shield';
 import GroupsIcon from '@mui/icons-material/Groups';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import EngineeringIcon from '@mui/icons-material/Engineering';
 import FactoryIcon from '@mui/icons-material/Factory';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 import { APP_NAME } from '../lib/constants';
 import { features, testimonials } from '../lib/api';
 
@@ -51,7 +50,7 @@ const Home: React.FC = () => {
             <Grid item xs={12} md={6}>
               <Box sx={{ mb: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <ConstructionIcon sx={{ fontSize: 40, mr: 2 }} />
+                  <FactoryIcon sx={{ fontSize: 40, mr: 2 }} />
                   <Typography variant="h6" component="span" sx={{ fontWeight: 'bold', letterSpacing: 1 }}>
                     {APP_NAME.toUpperCase()}
                   </Typography>

@@ -8,7 +8,7 @@ import {
   Box,
   Container
 } from '@mui/material';
-import ConstructionIcon from '@mui/icons-material/Construction';
+import FactoryIcon from '@mui/icons-material/Factory';
 import { APP_NAME } from '../lib/constants';
 
 const Navbar: React.FC = () => {
@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
               textDecoration: 'none'
             }}
           >
-            <ConstructionIcon sx={{ mr: 1 }} />
+            <FactoryIcon sx={{ mr: 1 }} />
             {APP_NAME}
           </Typography>
           

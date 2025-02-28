@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Container, 
@@ -25,16 +25,10 @@ import SendIcon from '@mui/icons-material/Send';
 import BusinessIcon from '@mui/icons-material/Business';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import emailjs from 'emailjs-com';
 import { APP_NAME } from '../lib/constants';
-
-// EmailJS configuration - using public keys for demo purposes
-const EMAILJS_SERVICE_ID = 'service_steelsyncpro'; // Replace with your actual service ID
-const EMAILJS_TEMPLATE_ID = 'steelsyncpr_contact_form'; // Replace with your actual template ID
-const EMAILJS_USER_ID = 'HipnufWZiuaQSArQ1'; // Replace with your actual public key
+import { sendEmail } from '../lib/emailService';
 
 const Contact: React.FC = () => {
-  const form = useRef<HTMLFormElement>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -80,11 +74,9 @@ const Contact: React.FC = () => {
     
     if (hasError) return;
     
-    // For demo purposes, simulate email sending
     setSending(true);
     
     try {
-      // In a real implementation, use EmailJS to send the email
       const templateParams = {
         from_name: name,
         from_email: email,
@@ -93,40 +85,28 @@ const Contact: React.FC = () => {
         to_email: 'info@steelsyncpro.com'
       };
       
-      // Initialize EmailJS with your user ID
-      emailjs.init(EMAILJS_USER_ID);
+      const result = await sendEmail(templateParams);
       
-      // Send the email
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_USER_ID
-      );
-      
-      // Show success message
-      setSnackbarMessage('Your message has been sent successfully! We will get back to you soon.');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      
-      // Reset form
-      setName('');
-      setEmail('');
-      setSubject('');
-      setMessage('');
-      
-      if (form.current) {
-        form.current.reset();
+      if (result.success) {
+        setSnackbarMessage('Your message has been sent successfully! We will get back to you soon.');
+        setSnackbarSeverity('success');
+        
+        // Reset form
+        setName('');
+        setEmail('');
+        setSubject('');
+        setMessage('');
+      } else {
+        setSnackbarMessage('Failed to send your message. Please try again later.');
+        setSnackbarSeverity('error');
       }
     } catch (error) {
       console.error('Error sending email:', error);
-      
-      // Show error message
       setSnackbarMessage('Failed to send your message. Please try again later.');
       setSnackbarSeverity('error');
-      setSnackbarOpen(true);
     } finally {
       setSending(false);
+      setSnackbarOpen(true);
     }
   };
 
@@ -218,7 +198,7 @@ const Contact: React.FC = () => {
                 Fill out the form below and our team will get back to you within 24 hours.
               </Typography>
               
-              <Box component="form" ref={form} onSubmit={handleSubmit}>
+              <Box component="form" onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -342,7 +322,7 @@ const Contact: React.FC = () => {
                     </ListItemIcon>
                     <ListItemText 
                       primary="Address" 
-                      secondary="1234 Steel Avenue, Pittsburgh, PA 15213, USA" 
+                      secondary="2800 NW 25th LN, Cape Coral, FL 33993, USA" 
                     />
                   </ListItem>
                 </List>
@@ -438,7 +418,7 @@ const Contact: React.FC = () => {
       {/* Map Section */}
       <Box sx={{ height: '400px', width: '100%', mb: 10 }}>
         <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96706.50013548559!2d-80.05903184179685!3d40.43539401793123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8834f16f48068503%3A0x8df915a15aa21b34!2sPittsburgh%2C%20PA!5e0!3m2!1sen!2sus!4v1653661275312!5m2!1sen!2sus" 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3573.0982326077!2d-81.99183792394698!3d26.6651598773899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88db44a2a9535c51%3A0xd1d4548101c7f5ac!2s2800%20NW%2025th%20Ln%2C%20Cape%20Coral%2C%20FL%2033993!5e0!3m2!1sen!2sus!4v1716321456789!5m2!1sen!2sus" 
           width="100%" 
           height="100%" 
           style={{ border: 0 }} 
@@ -595,7 +575,7 @@ const Contact: React.FC = () => {
       {/* Success/Error Snackbar */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={15000} // Changed from 6000 to 15000 (15 seconds)
+        autoHideDuration={6000}
         onClose={() => setSnackbarOpen(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
