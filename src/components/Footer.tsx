@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Grid } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { APP_NAME } from '../lib/constants';
-import { useTimezone } from '../contexts/TimezoneContext';
 
 const Footer = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const { timezone } = useTimezone();
   
   useEffect(() => {
     const timer = setInterval(() => setCurrentDateTime(new Date()), 1000);
@@ -22,7 +20,6 @@ const Footer = () => {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      timeZone: timezone,
       timeZoneName: 'short'
     };
     

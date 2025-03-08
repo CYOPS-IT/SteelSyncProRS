@@ -17,7 +17,7 @@ type ThemeContextType = {
 
 const defaultTheme: Theme = {
   style: 'industrial', 
-  variant: 'light'
+  variant: 'dark'
 };
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -38,8 +38,8 @@ export const themeColors: Record<ThemeStyle, {
 }> = {
   industrial: {
     primary: '#FF4D00',
-    secondary: '#FFB800',
-    background: '#F8F9FA',
+    secondary: '#FF8A00',
+    background: '#FAFBFF',
     backgroundDark: '#0D0D0D',
     paper: '#FFFFFF',
     paperDark: '#1F1F1F',
@@ -51,8 +51,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   forge: {
     primary: '#E53E3E',
-    secondary: '#F6AD55',
-    background: '#EDF6F9',
+    secondary: '#FF6B6B',
+    background: '#FEF9F9',
     backgroundDark: '#0A1D1F',
     paper: '#FFFFFF',
     paperDark: '#132B2E',
@@ -64,8 +64,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   steel: {
     primary: '#2B6CB0',
-    secondary: '#63B3ED',
-    background: '#F0F7F4',
+    secondary: '#4299E1',
+    background: '#F8FAFF',
     backgroundDark: '#1B2D22',
     paper: '#FFFFFF',
     paperDark: '#2D3D35',
@@ -77,8 +77,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   carbon: {
     primary: '#1A202C',
-    secondary: '#4A5568',
-    background: '#FDF6F3',
+    secondary: '#2D3748',
+    background: '#F7F9FC',
     backgroundDark: '#2A1B17',
     paper: '#FFFFFF',
     paperDark: '#3D2B26',
@@ -90,8 +90,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   titanium: {
     primary: '#805AD5',
-    secondary: '#B794F4',
-    background: '#F3EBFA',
+    secondary: '#9F7AEA',
+    background: '#FAF8FF',
     backgroundDark: '#1D0934',
     paper: '#FFFFFF',
     paperDark: '#2D1B44',
@@ -103,8 +103,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   copper: {
     primary: '#DD6B20',
-    secondary: '#F6AD55',
-    background: '#F0F1FE',
+    secondary: '#ED8936',
+    background: '#FDFAF7',
     backgroundDark: '#0F0A2A',
     paper: '#FFFFFF',
     paperDark: '#1F1B3D',
@@ -116,8 +116,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   chrome: {
     primary: '#718096',
-    secondary: '#A0AEC0',
-    background: '#F1F8F2',
+    secondary: '#4A5568',
+    background: '#F8FAFC',
     backgroundDark: '#0F1F13',
     paper: '#FFFFFF',
     paperDark: '#1F2F23',
@@ -129,8 +129,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   alloy: {
     primary: '#4A5568',
-    secondary: '#718096',
-    background: '#FAF4EF',
+    secondary: '#2D3748',
+    background: '#F7FAFD',
     backgroundDark: '#231912',
     paper: '#FFFFFF',
     paperDark: '#332922',
@@ -142,8 +142,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   iron: {
     primary: '#2D3748',
-    secondary: '#4A5568',
-    background: '#F6EDFB',
+    secondary: '#1A202C',
+    background: '#F8FAFC',
     backgroundDark: '#1A0B24',
     paper: '#FFFFFF',
     paperDark: '#2A1B34',
@@ -155,8 +155,8 @@ export const themeColors: Record<ThemeStyle, {
   },
   platinum: {
     primary: '#A0AEC0',
-    secondary: '#CBD5E0',
-    background: '#F0F9FC',
+    secondary: '#718096',
+    background: '#F9FAFB',
     backgroundDark: '#0A1B24',
     paper: '#FFFFFF',
     paperDark: '#1A2B34',
@@ -292,12 +292,12 @@ const createMuiTheme = (theme: Theme): MuiTheme => {
           root: {
             borderRadius: 16,
             boxShadow: theme => theme.variant === 'dark' ? 
-              '0 8px 32px rgba(0, 0, 0, 0.3)' :
-              '0 8px 32px rgba(0, 98, 230, 0.1)',
+              '0 8px 32px rgba(0, 0, 0, 0.3)' : 
+              '0 4px 24px rgba(0, 0, 0, 0.06)',
             backdropFilter: 'blur(10px)',
             background: theme => theme.variant === 'dark' ?
               `linear-gradient(135deg, ${colors.paperDark}F2, ${colors.backgroundDark}F2)` :
-              `linear-gradient(135deg, ${colors.paper}F2, ${colors.background}F2)`,
+              `linear-gradient(135deg, ${colors.paper}, ${colors.paper}F2)`,
             border: theme => `1px solid ${theme.variant === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 98, 230, 0.05)'}`
           }
         }
@@ -307,11 +307,11 @@ const createMuiTheme = (theme: Theme): MuiTheme => {
           root: {
             boxShadow: theme => theme.variant === 'dark' ?
               '0 4px 20px rgba(0, 0, 0, 0.2)' :
-              '0 4px 20px rgba(0, 98, 230, 0.1)',
+              '0 1px 3px rgba(0, 0, 0, 0.05)',
             backdropFilter: 'blur(12px)',
             background: theme => theme.variant === 'dark' ?
               `linear-gradient(180deg, ${colors.paperDark}F2, ${colors.backgroundDark}F2)` :
-              `linear-gradient(180deg, ${colors.paper}F2, ${colors.background}F2)`,
+              `linear-gradient(180deg, ${colors.paper}, ${colors.paper}F2)`,
             borderBottom: theme => `1px solid ${theme.variant === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 98, 230, 0.05)'}`
           }
         }
@@ -335,10 +335,7 @@ const createMuiTheme = (theme: Theme): MuiTheme => {
   };
 };
 
-import { useAuth } from './AuthContext';
-
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+export const ThemeProvider: React.FC<{ children: React.ReactNode; isAuthenticated?: boolean }> = ({ children, isAuthenticated = false }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     if (isAuthenticated) {
       const saved = localStorage.getItem('theme');
@@ -362,8 +359,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const getMuiTheme = () => {
-    // Always use light theme for unauthenticated users
-    const themeToUse = isAuthenticated ? theme : { ...defaultTheme, variant: 'light' };
+    // Use industrial dark theme for unauthenticated users
+    const themeToUse = isAuthenticated ? theme : defaultTheme;
     return createMuiTheme(themeToUse);
   };
 
