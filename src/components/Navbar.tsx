@@ -258,6 +258,7 @@ const Navbar: React.FC = () => {
                   component={RouterLink} 
                   to="/features" 
                   color="inherit"
+                  sx={{ color: 'text.primary' }}
                 >
                   Features
                 </Button>
@@ -265,6 +266,7 @@ const Navbar: React.FC = () => {
                   component={RouterLink} 
                   to="/capabilities" 
                   color="inherit"
+                  sx={{ color: 'text.primary' }}
                 >
                   Capabilities
                 </Button>
@@ -272,6 +274,7 @@ const Navbar: React.FC = () => {
                   component={RouterLink} 
                   to="/documentation" 
                   color="inherit"
+                  sx={{ color: 'text.primary' }}
                 >
                   Documentation
                 </Button>
