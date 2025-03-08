@@ -40,11 +40,11 @@ const Footer = () => {
       right: 0,
       zIndex: 1200,
       background: theme => theme.palette.mode === 'dark' ?
-        'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+        'linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(13, 13, 13, 0.98) 100%)' :
         'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
       backdropFilter: 'blur(10px)',
       boxShadow: theme => theme.palette.mode === 'dark' ?
-        '0 -4px 20px rgba(0, 0, 0, 0.2)' :
+        '0 -4px 20px rgba(0, 0, 0, 0.3)' :
         '0 -4px 20px rgba(0, 0, 0, 0.1)'
     }}>
       <Container maxWidth="lg">

@@ -29,7 +29,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import PaletteIcon from '@mui/icons-material/Palette';
 import { APP_NAME } from '../lib/constants';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme, ThemeStyle, themeColors } from '../contexts/ThemeContext';
+import { useTheme as useAppTheme, ThemeStyle, themeColors } from '../contexts/ThemeContext';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user, signOut, loading } = useAuth();
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   const [signingOut, setSigningOut] = useState(false);
   
   const [themeMenuAnchor, setThemeMenuAnchor] = useState<null | HTMLElement>(null);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useAppTheme();
   
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -140,7 +140,7 @@ const Navbar: React.FC = () => {
         zIndex: (theme) => theme.zIndex.drawer + 1,
         width: '100%',
         background: theme => theme.palette.mode === 'dark' ?
-          'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+          'linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(13, 13, 13, 0.98) 100%)' :
           'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
         backdropFilter: 'blur(10px)'
       }}
@@ -183,6 +183,7 @@ const Navbar: React.FC = () => {
                 <IconButton
                   onClick={handleThemeVariantToggle}
                   size="small"
+                  color="inherit"
                   sx={{ 
                     color: 'text.secondary',
                     bgcolor: 'action.hover',
@@ -196,6 +197,7 @@ const Navbar: React.FC = () => {
                 <IconButton
                   onClick={handleThemeMenu}
                   size="small"
+                  color="inherit"
                   sx={{ 
                     color: 'text.secondary',
                     bgcolor: 'action.hover',
@@ -378,7 +380,7 @@ const Navbar: React.FC = () => {
         PaperProps={{
           sx: {
             background: theme => theme.palette.mode === 'dark' ?
-              'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+              'linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(13, 13, 13, 0.98) 100%)' :
               'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
             backdropFilter: 'blur(10px)'
           }

@@ -5,7 +5,7 @@ import { createTheme } from '@mui/material/styles';
 import Navbar from './Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from './Footer';
-import { useTheme as useCustomTheme } from '../contexts/ThemeContext';
+import { useTheme as useAppTheme } from '../contexts/ThemeContext';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -22,8 +22,8 @@ const Layout = () => {
   const [desktopOpen, setDesktopOpen] = React.useState(true);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
-  const { getMuiTheme } = useCustomTheme();
-  const theme = React.useMemo(() => createTheme(getMuiTheme()), [getMuiTheme, isAuthenticated]);
+  const { getMuiTheme } = useAppTheme();
+  const muiTheme = React.useMemo(() => createTheme(getMuiTheme()), [getMuiTheme, isAuthenticated]);
 
   const MENU_ITEMS = [
     { title: 'Dashboard', icon: DashboardIcon, path: '/dashboard' },
@@ -63,13 +63,13 @@ const Layout = () => {
                 alignItems: 'center',
                 bgcolor: theme => location.pathname === item.path 
                   ? theme.palette.mode === 'dark'
-                    ? `${theme.palette.primary.main}30`
-                    : `${theme.palette.primary.main}15`
+                    ? `${muiTheme.palette.primary.main}30`
+                    : `${muiTheme.palette.primary.main}15`
                   : 'transparent',
                 '&:hover': {
                   bgcolor: theme => theme.palette.mode === 'dark'
-                    ? `${theme.palette.primary.main}40`
-                    : `${theme.palette.primary.main}20`,
+                    ? `${muiTheme.palette.primary.main}40`
+                    : `${muiTheme.palette.primary.main}20`,
                   transform: 'translateX(4px)',
                   '& .MuiListItemIcon-root': {
                     color: 'primary.main'
@@ -115,7 +115,7 @@ const Layout = () => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={muiTheme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
         <Navbar />
@@ -135,11 +135,11 @@ const Layout = () => {
                 PaperProps={{
                   sx: {
                     background: theme => theme.palette.mode === 'dark' ?
-                      'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+                      'linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(13, 13, 13, 0.98) 100%)' :
                       'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
                     backdropFilter: 'blur(10px)',
                     borderRight: '1px solid',
-                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
                   }
                 }}
                 onClose={() => setMobileOpen(false)}
@@ -165,25 +165,25 @@ const Layout = () => {
                 PaperProps={{
                   sx: {
                     background: theme => theme.palette.mode === 'dark' ?
-                      'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+                      'linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(13, 13, 13, 0.98) 100%)' :
                       'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
                     backdropFilter: 'blur(10px)',
                     borderRight: '1px solid',
-                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
                   }
                 }}
                 sx={{
                   width: desktopOpen ? DRAWER_WIDTH : 48,
-                  transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.enteringScreen,
+                  transition: muiTheme.transitions.create('width', {
+                    easing: muiTheme.transitions.easing.sharp,
+                    duration: muiTheme.transitions.duration.enteringScreen,
                   }),
                   '& .MuiDrawer-paper': { 
                     width: desktopOpen ? DRAWER_WIDTH : 48,
                     overflowX: 'hidden',
-                    transition: theme.transitions.create('width', {
-                      easing: theme.transitions.easing.sharp,
-                      duration: theme.transitions.duration.enteringScreen,
+                    transition: muiTheme.transitions.create('width', {
+                      easing: muiTheme.transitions.easing.sharp,
+                      duration: muiTheme.transitions.duration.enteringScreen,
                     }),
                     height: '100%',
                     display: 'flex',

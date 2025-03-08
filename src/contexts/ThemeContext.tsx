@@ -16,8 +16,8 @@ type ThemeContextType = {
 };
 
 const defaultTheme: Theme = {
-  style: 'industrial',
-  variant: localStorage.getItem('themeVariant') as ThemeVariant || 'light'
+  style: 'industrial', 
+  variant: 'light'
 };
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -39,14 +39,14 @@ export const themeColors: Record<ThemeStyle, {
   industrial: {
     primary: '#FF4D00',
     secondary: '#FFB800',
-    background: '#F4F7FE',
-    backgroundDark: '#111827',
+    background: '#F8F9FA',
+    backgroundDark: '#0D0D0D',
     paper: '#FFFFFF',
-    paperDark: '#1F2937',
+    paperDark: '#1F1F1F',
     text: '#111827',
     textSecondary: '#4B5563',
-    textDark: '#F3F4F6',
-    textSecondaryDark: '#9CA3AF',
+    textDark: '#E5E5E5',
+    textSecondaryDark: '#A3A3A3',
     gradient: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 50%, #FFF700 100%)'
   },
   forge: {
@@ -335,7 +335,10 @@ const createMuiTheme = (theme: Theme): MuiTheme => {
   };
 };
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode; isAuthenticated?: boolean }> = ({ children, isAuthenticated = false }) => {
+import { useAuth } from './AuthContext';
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
   const [theme, setTheme] = useState<Theme>(() => {
     if (isAuthenticated) {
       const saved = localStorage.getItem('theme');
@@ -359,8 +362,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode; isAuthenticate
   };
 
   const getMuiTheme = () => {
-    // Only apply custom theme for authenticated users
-    const themeToUse = isAuthenticated ? theme : defaultTheme;
+    // Always use light theme for unauthenticated users
+    const themeToUse = isAuthenticated ? theme : { ...defaultTheme, variant: 'light' };
     return createMuiTheme(themeToUse);
   };
 

@@ -165,10 +165,6 @@ steel-sync-pro/
 - Activity monitoring
 - Secure authentication
 
-## Deployment
-
-This application can be deployed to any static hosting service like Vercel, Netlify, or GitHub Pages.
-
 ## License
 
 [MIT](LICENSE)
