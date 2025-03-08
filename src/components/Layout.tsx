@@ -1,74 +1,226 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Box, CssBaseline, ThemeProvider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import Navbar from './Navbar';
+import { useAuth } from '../contexts/AuthContext';
 import Footer from './Footer';
+import { useTheme as useCustomTheme } from '../contexts/ThemeContext';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import FactoryIcon from '@mui/icons-material/Factory';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import BuildIcon from '@mui/icons-material/Build';
+import { APP_NAME } from '../lib/constants';
 
-const theme = createTheme({
-  palette: {
-    primary: {main: '#2C3E50', light: '#34495E', dark: '#1A2530'},
-    secondary: {main: '#E74C3C', light: '#EC7063', dark: '#C0392B'},
-    background: {default: '#ECEFF1', paper: '#FFFFFF'},
-    error: {main: '#E53935'},
-    warning: {main: '#F39C12'},
-    info: {main: '#3498DB'},
-    success: {main: '#2ECC71'},
-    text: {primary: '#2C3E50', secondary: '#7F8C8D'}
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {fontSize: '2.5rem', fontWeight: 700, letterSpacing: '-0.01562em'},
-    h2: {fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.00833em'},
-    h3: {fontSize: '1.75rem', fontWeight: 600, letterSpacing: '0em'},
-    h4: {fontSize: '1.5rem', fontWeight: 600, letterSpacing: '0.00735em'},
-    h5: {fontSize: '1.25rem', fontWeight: 600, letterSpacing: '0em'},
-    h6: {fontSize: '1rem', fontWeight: 600, letterSpacing: '0.0075em'},
-    button: {textTransform: 'none', fontWeight: 500}
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
-          fontWeight: 500,
-          boxShadow: 'none',
-          '&:hover': {boxShadow: '0 4px 8px rgba(0,0,0,0.1)'}
-        },
-        contained: {'&:hover': {boxShadow: '0 6px 12px rgba(0,0,0,0.15)'}}
-      }
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-          overflow: 'hidden',
-          transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-4px)',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
-          }
-        }
-      }
-    },
-    MuiPaper: {styleOverrides: {root: {borderRadius: 12, boxShadow: '0 4px 20px rgba(0,0,0,0.05)'}}},
-    MuiAppBar: {styleOverrides: {root: {boxShadow: '0 2px 10px rgba(0,0,0,0.05)'}}},
-    MuiTableCell: {styleOverrides: {head: {fontWeight: 600, backgroundColor: 'rgba(44, 62, 80, 0.05)'}}},
-    MuiLinearProgress: {styleOverrides: {root: {borderRadius: 4, backgroundColor: 'rgba(44, 62, 80, 0.1)'}}},
-    MuiAvatar: {styleOverrides: {root: {boxShadow: '0 2px 5px rgba(0,0,0,0.1)'}}}
-  }
-});
+const DRAWER_WIDTH = 240;
 
-const Layout = () => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-      <Navbar />
-      <Box component="main" sx={{flexGrow: 1, p: 0, pb: 8}}><Outlet /></Box>
-      <Footer />
+const Layout = () => {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [desktopOpen, setDesktopOpen] = React.useState(true);
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+  const { getMuiTheme } = useCustomTheme();
+  const theme = React.useMemo(() => createTheme(getMuiTheme()), [getMuiTheme, isAuthenticated]);
+
+  const MENU_ITEMS = [
+    { title: 'Dashboard', icon: DashboardIcon, path: '/dashboard' },
+    { title: 'Production', icon: FactoryIcon, path: '/production' },
+    { title: 'Inventory', icon: InventoryIcon, path: '/inventory' },
+    { title: 'Analytics', icon: BarChartIcon, path: '/analytics' },
+    { title: 'Maintenance', icon: BuildIcon, path: '/maintenance' }
+  ];
+  
+  React.useEffect(() => {
+    // Close mobile drawer when location changes
+    setMobileOpen(false);
+  }, [location]);
+
+  const drawer = (
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
+        <IconButton onClick={() => setDesktopOpen(prev => !prev)}>
+          {desktopOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </Box>
+      <List>
+        {MENU_ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <ListItem
+              key={item.title}
+              sx={{
+                mb: 1,
+                borderRadius: '10px',
+                mx: desktopOpen ? 1 : '4px',
+                width: desktopOpen ? 'auto' : '40px',
+                height: '40px',
+                p: 0,
+                transition: 'all 0.2s ease-in-out',
+                justifyContent: desktopOpen ? 'flex-start' : 'center',
+                alignItems: 'center',
+                bgcolor: theme => location.pathname === item.path 
+                  ? theme.palette.mode === 'dark'
+                    ? `${theme.palette.primary.main}30`
+                    : `${theme.palette.primary.main}15`
+                  : 'transparent',
+                '&:hover': {
+                  bgcolor: theme => theme.palette.mode === 'dark'
+                    ? `${theme.palette.primary.main}40`
+                    : `${theme.palette.primary.main}20`,
+                  transform: 'translateX(4px)',
+                  '& .MuiListItemIcon-root': {
+                    color: 'primary.main'
+                  }
+                }
+              }}
+              button
+            >
+              <ListItemIcon sx={{
+                minWidth: 'auto',
+                mr: desktopOpen ? 2 : 0,
+                width: 24,
+                height: 24,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <Icon 
+                  sx={{ 
+                    color: location.pathname === item.path ? 'text.secondary' : 'text.primary',
+                    transition: 'color 0.2s ease-in-out'
+                  }} 
+                />
+              </ListItemIcon>
+              <ListItemText
+                sx={{ 
+                  opacity: desktopOpen ? 1 : 0,
+                  display: desktopOpen ? 'block' : 'none'
+                }}
+                primary={item.title}
+                primaryTypographyProps={{
+                  fontWeight: location.pathname === item.path ? 'bold' : 'normal',
+                  color: theme => location.pathname === item.path 
+                    ? 'text.secondary'
+                    : 'text.primary'
+                }}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
     </Box>
-  </ThemeProvider>
-);
+  );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+        <Navbar />
+        <Box sx={{ display: 'flex', flex: 1, mt: '64px' }}>
+          {isAuthenticated && (
+            <Box 
+              component="nav" 
+              sx={{ 
+                flexShrink: 0,
+                display: { xs: 'none', md: 'block' }
+              }}
+            >
+              {/* Mobile drawer */}
+              <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                PaperProps={{
+                  sx: {
+                    background: theme => theme.palette.mode === 'dark' ?
+                      'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+                      'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    borderRight: '1px solid',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                  }
+                }}
+                onClose={() => setMobileOpen(false)}
+                ModalProps={{ keepMounted: true }}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                  '& .MuiDrawer-paper': { 
+                    boxSizing: 'border-box', 
+                    width: DRAWER_WIDTH,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  },
+                }}
+              >
+                {drawer}
+              </Drawer>
+              
+              {/* Desktop drawer */}
+              <Drawer
+                variant="permanent"
+                open={desktopOpen}
+                PaperProps={{
+                  sx: {
+                    background: theme => theme.palette.mode === 'dark' ?
+                      'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%)' :
+                      'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 247, 254, 0.98) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    borderRight: '1px solid',
+                    borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                  }
+                }}
+                sx={{
+                  width: desktopOpen ? DRAWER_WIDTH : 48,
+                  transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.enteringScreen,
+                  }),
+                  '& .MuiDrawer-paper': { 
+                    width: desktopOpen ? DRAWER_WIDTH : 48,
+                    overflowX: 'hidden',
+                    transition: theme.transitions.create('width', {
+                      easing: theme.transitions.easing.sharp,
+                      duration: theme.transitions.duration.enteringScreen,
+                    }),
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    pt: '64px'
+                  },
+                }}
+              >
+                {drawer}
+              </Drawer>
+            </Box>
+          )}
+          <Box
+            component="main"
+            sx={{
+              width: '100%',
+              flexGrow: 1,
+              p: 3, 
+              pb: 10,
+              minHeight: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              background: theme => theme.palette.mode === 'dark' 
+                ? `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`
+                : `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`,
+              backdropFilter: 'blur(10px)',
+              borderRight: '1px solid',
+              borderColor: 'divider'
+            }}
+          >
+            <Outlet />
+          </Box>
+          <Footer />
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
+};
 
 export default Layout;
